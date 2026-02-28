@@ -8,19 +8,16 @@ export default function Home() {
   const isMobile = useMemo(() => {
     if (typeof window === "undefined") return false;
     const coarse =
-      window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+      window.matchMedia &&
+      window.matchMedia("(pointer: coarse)").matches;
     const small = window.innerWidth < 768;
-    const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
+    const ua =
+      typeof navigator !== "undefined" ? navigator.userAgent : "";
     const mobileUA = /Android|iPhone|iPad|iPod/i.test(ua);
     return coarse || small || mobileUA;
   }, []);
 
   useEffect(() => {
-    if (isMobile) {
-      document.body.style.background = "radial-gradient(circle at center, #1a0000 0%, #000 100%)";
-      return;
-    }
-
     let bg = null;
     let destroyed = false;
     let rafId = null;
@@ -46,9 +43,9 @@ export default function Home() {
         if (!canvasRef.current || destroyed) return;
 
         const canvas = canvasRef.current;
-        if (isMobile && bg.renderer) {
-          bg.renderer.setPixelRatio(1);   // reduces GPU stress
-        }     
+
+        // Create background properly
+        bg = Grid1Background(canvas);
 
         const RED1 = 0xff1744;
         const RED2 = 0xb00020;
@@ -59,9 +56,9 @@ export default function Home() {
         bg.grid.light2.color.set(RED2);
 
         if (isMobile) {
-          bg.grid.light1.intensity = 900;   // half intensity
-          bg.grid.light2.intensity = 400;
-          bg.grid.material.opacity = 0.75;
+          bg.renderer.setPixelRatio(1);
+          bg.grid.light1.intensity = 1000;
+          bg.grid.light2.intensity = 450;
         } else {
           bg.grid.light1.intensity = 1800;
           bg.grid.light2.intensity = 750;
@@ -81,13 +78,21 @@ export default function Home() {
 
     function animate() {
       if (destroyed || !bg) return;
-      t += isMobile ? 0.008 : 0.015;
-      const pulse = 0.85 + Math.sin(t) * 0.12;
-      const flicker = 1 + (Math.random() - 0.5) * 0.03;
 
-      bg.grid.light1.intensity = 1800 * pulse * flicker;
+      t += isMobile ? 0.01 : 0.015;
+
+      const pulse = 0.85 + Math.sin(t) * 0.12;
+      const flicker =
+        1 + (Math.random() - 0.5) * 0.03;
+
+      bg.grid.light1.intensity =
+        (isMobile ? 1000 : 1800) *
+        pulse *
+        flicker;
+
       bg.grid.light2.intensity =
-        750 * (0.9 + Math.sin(t * 0.6) * 0.08);
+        (isMobile ? 450 : 750) *
+        (0.9 + Math.sin(t * 0.6) * 0.08);
 
       rafId = requestAnimationFrame(animate);
     }
@@ -97,40 +102,67 @@ export default function Home() {
     return () => {
       destroyed = true;
       stop();
-      document.removeEventListener("visibilitychange", onVisibility);
+      document.removeEventListener(
+        "visibilitychange",
+        onVisibility
+      );
       try {
         if (bg?.destroy) bg.destroy();
         if (bg?.dispose) bg.dispose();
-      } catch (e) {}
+      } catch {}
     };
   }, [isMobile]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      
+    <div className="relative min-h-screen">
       {/* Glitch Styles */}
       <style>{`
         @keyframes autoGlitch {
-          0%, 85%, 100% { transform: translate(0); filter: hue-rotate(0deg); opacity: 1; }
-          86% { transform: translate(-3px, 2px); filter: hue-rotate(90deg); opacity: 0.9; }
-          88% { transform: translate(3px, -2px); filter: hue-rotate(-90deg); opacity: 0.8; }
-          90% { transform: translate(-3px, -2px); filter: hue-rotate(45deg); opacity: 1; }
-          92% { transform: translate(3px, 2px); filter: hue-rotate(-45deg); opacity: 0.9; }
-          95% { transform: translate(-2px, 0); filter: hue-rotate(0); }
-          98% { transform: translate(0); filter: hue-rotate(0); }
+          0%, 85%, 100% {
+            transform: translate(0);
+            filter: hue-rotate(0deg);
+            opacity: 1;
+          }
+          86% {
+            transform: translate(-3px, 2px);
+            filter: hue-rotate(90deg);
+            opacity: 0.9;
+          }
+          88% {
+            transform: translate(3px, -2px);
+            filter: hue-rotate(-90deg);
+            opacity: 0.8;
+          }
+          90% {
+            transform: translate(-3px, -2px);
+            filter: hue-rotate(45deg);
+            opacity: 1;
+          }
+          92% {
+            transform: translate(3px, 2px);
+            filter: hue-rotate(-45deg);
+            opacity: 0.9;
+          }
+          95% {
+            transform: translate(-2px, 0);
+            filter: hue-rotate(0);
+          }
+          98% {
+            transform: translate(0);
+            filter: hue-rotate(0);
+          }
         }
-        .animate-auto-glitch { 
+
+        .animate-auto-glitch {
           animation: autoGlitch 3s step-end infinite;
         }
       `}</style>
 
-      {/* Desktop Background */}
-      {!isMobile && (
-        <canvas
-          ref={canvasRef}
-          className="fixed inset-0 w-full h-full -z-10"
-        />
-      )}
+      {/* Background Canvas (ALL devices) */}
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 w-full h-full -z-10"
+      />
 
       {/* Overlays */}
       <div className="fixed inset-0 -z-10 bg-gradient-to-b from-black via-black/70 to-red-950/30" />
@@ -138,7 +170,6 @@ export default function Home() {
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center text-center px-6">
-        
         <p className="mt-16 mb-8 text-red-400 font-bold tracking-[0.3em] uppercase animate-pulse text-sm md:text-base drop-shadow-2xl">
           Welcome to EPSILON 2K26
         </p>

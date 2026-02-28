@@ -15,20 +15,16 @@
 
 /* ---------------- GLOBAL BEHAVIOR (Mobile Optimized) ---------------- */
 
-html {
-  scroll-behavior: smooth;
-}
+
 
 html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 
-body {
-  overscroll-behavior-y: none;
-}
 
 /* Improve mobile tap smoothness */
 * {
