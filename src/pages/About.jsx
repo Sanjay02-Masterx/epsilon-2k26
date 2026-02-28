@@ -110,7 +110,7 @@ const About = () => {
 
   // STEP 2: Create particles with React (once)
   useEffect(() => {
-    const p = Array.from({ length: 40 }).map(() => ({
+    const p = Array.from({ length: window.innerWidth < 768 ? 12 : 40 }).map(() => ({
       id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substr(2, 9),
       size: Math.random() * 3 + 1,
       left: Math.random() * 100,
@@ -156,8 +156,8 @@ const About = () => {
           scrollTrigger: {
             trigger: sceneRef.current, // 🔥 FIX 2: Trigger on the wrapper
             start: "top top",
-            end: isMobile ? "+=2500" : "+=4000",
-            scrub: isMobile ? 0.8 : 1.5,
+            end: isMobile ? "+=1800" : "+=4000",
+            scrub: isMobile ? 0.3 : 1.5,
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,

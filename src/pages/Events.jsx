@@ -88,7 +88,7 @@ export default function Events() {
       {/* FIREFLIES */}
       {!isMobile && (
         <div className="fixed inset-0 z-[2] pointer-events-none">
-          <Fireflies count={25} />
+          <Fireflies count={isMobile ? 8 : 25} />
         </div>
       )}
 
@@ -98,11 +98,11 @@ export default function Events() {
           colors={["#FF0000", "#FF1744", "#FF4444", "#FF6666"]}
           mouseForce={isMobile ? 12 : 25}
           cursorSize={isMobile ? 50 : 110}
-          isViscous={!isMobile}
+          isViscous={false}
           viscous={isMobile ? 15 : 30}
           iterationsViscous={isMobile ? 12 : 20}
           iterationsPoisson={isMobile ? 12 : 20}
-          resolution={isMobile ? 0.2 : 0.45}
+          resolution={isMobile ? 0.12 : 0.45}
           autoDemo={!isMobile}
           autoSpeed={0.35}
           autoIntensity={1.4}

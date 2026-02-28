@@ -13,17 +13,30 @@
   transform: scale(1.12);
 }
 
-/* Global behavior */
+/* ---------------- GLOBAL BEHAVIOR (Mobile Optimized) ---------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
+body {
+  overscroll-behavior-y: none;
+}
+
+/* Improve mobile tap smoothness */
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
+
+/* ---------------- LOADER ---------------- */
 
 @keyframes square-animation {
  0% { left:0; top:0; }
@@ -69,5 +82,3 @@ html, body {
 .loader-square:nth-child(6){animation-delay:-7.142s;}
 .loader-square:nth-child(7){animation-delay:-8.571s;}
 .loader-square:nth-child(8){animation-delay:-10s;}
-
-

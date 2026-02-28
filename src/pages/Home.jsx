@@ -16,7 +16,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile) {
+      document.body.style.background = "radial-gradient(circle at center, #1a0000 0%, #000 100%)";
+      return;
+    }
 
     let bg = null;
     let destroyed = false;
@@ -43,7 +46,9 @@ export default function Home() {
         if (!canvasRef.current || destroyed) return;
 
         const canvas = canvasRef.current;
-        bg = Grid1Background(canvas);
+        if (isMobile && bg.renderer) {
+          bg.renderer.setPixelRatio(1);   // reduces GPU stress
+        }     
 
         const RED1 = 0xff1744;
         const RED2 = 0xb00020;
@@ -51,9 +56,16 @@ export default function Home() {
 
         bg.grid.setColors([RED1, RED2, RED3]);
         bg.grid.light1.color.set(RED1);
-        bg.grid.light1.intensity = 1800;
         bg.grid.light2.color.set(RED2);
-        bg.grid.light2.intensity = 750;
+
+        if (isMobile) {
+          bg.grid.light1.intensity = 900;   // half intensity
+          bg.grid.light2.intensity = 400;
+          bg.grid.material.opacity = 0.75;
+        } else {
+          bg.grid.light1.intensity = 1800;
+          bg.grid.light2.intensity = 750;
+        }
 
         if (bg.grid?.material) {
           bg.grid.material.opacity = 0.85;
@@ -69,7 +81,7 @@ export default function Home() {
 
     function animate() {
       if (destroyed || !bg) return;
-      t += 0.015;
+      t += isMobile ? 0.008 : 0.015;
       const pulse = 0.85 + Math.sin(t) * 0.12;
       const flicker = 1 + (Math.random() - 0.5) * 0.03;
 
