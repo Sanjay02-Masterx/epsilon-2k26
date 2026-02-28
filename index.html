@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EPSILON 2K26 | Department of EEE | MSEC</title>
+
+  <!-- SEO -->
+  <meta name="description" content="EPSILON 2K26 - National Level Technical Symposium conducted by the Department of Electrical and Electronics Engineering, Meenakshi Sundararajan Engineering College." />
+  <meta name="theme-color" content="#8B0000" />
+
+  <!-- FAVICONS -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- NETFLIX INTRO CSS -->
+  <link rel="stylesheet" href="/netflix-intro.css" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-33C9Y0EVMG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-33C9Y0EVMG');
+  </script>
+
+  <style>
+    #netflix-intro {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000;
+    }
+
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🎬 INTRO ANIMATION -->
+  <div id="netflix-intro">
+    <div id="container">
+      <netflixintro letter="N">
+
+        <!-- LEFT STROKE -->
+        <div class="helper-1">
+          <div class="effect-brush">
+            <!-- Fur strips -->
+            <span class="fur-31"></span><span class="fur-30"></span><span class="fur-29"></span>
+            <span class="fur-28"></span><span class="fur-27"></span><span class="fur-26"></span>
+            <span class="fur-25"></span><span class="fur-24"></span><span class="fur-23"></span>
+            <span class="fur-22"></span><span class="fur-21"></span><span class="fur-20"></span>
+            <span class="fur-19"></span><span class="fur-18"></span><span class="fur-17"></span>
+            <span class="fur-16"></span><span class="fur-15"></span><span class="fur-14"></span>
+            <span class="fur-13"></span><span class="fur-12"></span><span class="fur-11"></span>
+            <span class="fur-10"></span><span class="fur-9"></span><span class="fur-8"></span>
+            <span class="fur-7"></span><span class="fur-6"></span><span class="fur-5"></span>
+            <span class="fur-4"></span><span class="fur-3"></span><span class="fur-2"></span>
+            <span class="fur-1"></span>
+          </div>
+
+          <!-- ✨ REDUCED LIGHT BEAMS (14 instead of 28) -->
+          <div class="effect-lumieres">
+            <span class="lamp-1"></span><span class="lamp-2"></span><span class="lamp-3"></span>
+            <span class="lamp-4"></span><span class="lamp-5"></span><span class="lamp-6"></span>
+            <span class="lamp-7"></span><span class="lamp-8"></span><span class="lamp-9"></span>
+            <span class="lamp-10"></span><span class="lamp-11"></span><span class="lamp-12"></span>
+            <span class="lamp-13"></span><span class="lamp-14"></span>
+          </div>
+        </div>
+
+        <!-- RIGHT STROKE -->
+        <div class="helper-2">
+          <div class="effect-brush">
+            <span class="fur-31"></span><span class="fur-30"></span><span class="fur-29"></span>
+            <span class="fur-28"></span><span class="fur-27"></span><span class="fur-26"></span>
+            <span class="fur-25"></span><span class="fur-24"></span><span class="fur-23"></span>
+            <span class="fur-22"></span><span class="fur-21"></span><span class="fur-20"></span>
+            <span class="fur-19"></span><span class="fur-18"></span><span class="fur-17"></span>
+            <span class="fur-16"></span><span class="fur-15"></span><span class="fur-14"></span>
+            <span class="fur-13"></span><span class="fur-12"></span><span class="fur-11"></span>
+            <span class="fur-10"></span><span class="fur-9"></span><span class="fur-8"></span>
+            <span class="fur-7"></span><span class="fur-6"></span><span class="fur-5"></span>
+            <span class="fur-4"></span><span class="fur-3"></span><span class="fur-2"></span>
+            <span class="fur-1"></span>
+          </div>
+        </div>
+
+        <!-- DIAGONAL STROKE -->
+        <div class="helper-3">
+          <div class="effect-brush">
+            <span class="fur-31"></span><span class="fur-30"></span><span class="fur-29"></span>
+            <span class="fur-28"></span><span class="fur-27"></span><span class="fur-26"></span>
+            <span class="fur-25"></span><span class="fur-24"></span><span class="fur-23"></span>
+            <span class="fur-22"></span><span class="fur-21"></span><span class="fur-20"></span>
+            <span class="fur-19"></span><span class="fur-18"></span><span class="fur-17"></span>
+            <span class="fur-16"></span><span class="fur-15"></span><span class="fur-14"></span>
+            <span class="fur-13"></span><span class="fur-12"></span><span class="fur-11"></span>
+            <span class="fur-10"></span><span class="fur-9"></span><span class="fur-8"></span>
+            <span class="fur-7"></span><span class="fur-6"></span><span class="fur-5"></span>
+            <span class="fur-4"></span><span class="fur-3"></span><span class="fur-2"></span>
+            <span class="fur-1"></span>
+          </div>
+        </div>
+
+      </netflixintro>
+    </div>
+  </div>
+
+  <!-- REACT APP -->
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- INTRO CONTROL -->
+<script>
+  const intro = document.getElementById("netflix-intro");
+
+  if (!sessionStorage.getItem("introPlayed")) {
+    sessionStorage.setItem("introPlayed", "true");
+
+    setTimeout(() => intro.classList.add("fade-out"), 3500);
+
+    setTimeout(() => {
+      intro.remove();
+
+      /* 🔥 HARD COMPOSITOR RESET FOR MOBILE */
+      document.documentElement.style.overflow = "hidden";
+
+      requestAnimationFrame(() => {
+        document.documentElement.style.overflow = "";
+        document.body.style.transform = "translateZ(0)";
+      });
+
+      setTimeout(() => {
+        document.body.style.transform = "";
+      }, 50);
+
+    }, 4300);
+
+  } else {
+    intro.remove();
+  }
+</script>
+
+
+
+</body>
+</html>
