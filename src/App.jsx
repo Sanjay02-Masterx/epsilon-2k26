@@ -1,42 +1,56 @@
 import { BrowserRouter, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import AppRoutes from "./routes/AppRoutes";
-import Navbar from "./components/common/Navbar";
-import Footer from "./components/common/Footer";
+import AppRoutes     from "./routes/AppRoutes";
+import Navbar        from "./components/common/Navbar";
+import Footer        from "./components/common/Footer";
+import LoadingScreen from "./components/common/LoadingScreen";
 
-/**
- * Wrapper to sync Navbar state with React Router
- */
+// ─────────────────────────────────────────────────────────────────────────────
+//  Boot sequence
+//
+//  FIRST EVER VISIT  →  index.html script redirects to /epsilon-intro.html
+//                         (happens before React even boots, zero flash)
+//                         User watches intro, clicks "Enter the Upside Down ⚡"
+//                         → epsilon-intro.html sets sessionStorage.introSeen = '1'
+//                         → navigates to /home
+//                         → App mounts → LoadingScreen (~2.85s) → full app
+//
+//  EVERY REFRESH     →  index.html skips redirect (introSeen already set)
+//                         → App mounts → LoadingScreen (~2.85s) → full app
+//
+//  REACT ROUTER NAV  →  No hard reload → LoadingScreen does not re-show
+// ─────────────────────────────────────────────────────────────────────────────
+
 function AppLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState("home");
 
-  // Sync URL -> Navbar active state
+  // Show LoadingScreen on every hard load/refresh (no sessionStorage skip)
+  const [loading, setLoading] = useState(true);
+  const handleLoadingComplete = () => setLoading(false);
+
+  // Sync URL → Navbar active state
   useEffect(() => {
     const path = location.pathname.split("/")[1];
-
-    if (!path) {
-      setCurrentPage("home");
-    } else {
-      setCurrentPage(path);
-    }
+    setCurrentPage(path || "home");
   }, [location.pathname]);
 
-  // Navbar click -> Router navigation
+  // Navbar click → Router navigation
   const handleNavigate = (page) => {
     setCurrentPage(page);
     navigate(page === "home" ? "/" : `/${page}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  if (loading) {
+    return <LoadingScreen onComplete={handleLoadingComplete} />;
+  }
+
   return (
     <>
-      <Navbar
-        currentPage={currentPage}
-        onNavigate={handleNavigate}
-      />
+      <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
       <AppRoutes />
       <Footer />
     </>

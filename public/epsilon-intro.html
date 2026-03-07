@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>EPSILON 2K26</title>
+<style>
+
+/* =====================================================
+   FONT
+===================================================== */
+@font-face {
+  font-family: "BenguiatITCW01-BoldCn";
+  src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/161676/BenguiatProITC-BoldCond.woff") format("woff"),
+       url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/161676/BenguiatProITC-BoldCond.ttf") format("truetype");
+  font-style: normal; font-weight: bold;
+}
+
+/* =====================================================
+   RESET
+===================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  background: #000; overflow: hidden;
+  text-align: center; line-height: 1;
+  -webkit-font-smoothing: subpixel-antialiased;
+  touch-action: manipulation;
+}
+
+/* =====================================================
+   SKIP BUTTON — fixed top-right, z above everything
+===================================================== */
+#skipBtn {
+  position: fixed; top: 16px; right: 16px; z-index: 10000;
+  display: none; align-items: center; gap: 5px;
+  background: rgba(0,0,0,0.7);
+  border: 1.5px solid rgba(193,27,31,0.6); border-radius: 3px;
+  color: #C11B1F;
+  font-family: "Avant Garde", Avantgarde, "Century Gothic", sans-serif;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 7px 13px 7px 9px; cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+  -webkit-user-select: none; user-select: none;
+}
+#skipBtn.vis { display: flex; }
+#skipBtn:hover { background: rgba(193,27,31,0.15); box-shadow: 0 0 14px rgba(193,27,31,0.4); }
+#skipBtn svg { width: 14px; height: 14px; fill: #C11B1F; }
+
+/* =====================================================
+   INTRO SPLASH
+===================================================== */
+.intro {
+  padding: 0 20px; width: 100%; max-width: 440px;
+  position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  transition: opacity 600ms ease, visibility 0ms linear 800ms;
+}
+.intro--hide { opacity: 0; visibility: hidden; }
+
+.intro-title {
+  font-family: "BenguiatITCW01-BoldCn", Georgia, serif;
+  color: #C11B1F; font-size: 34px; margin-bottom: 10px;
+  -webkit-text-fill-color: #C11B1F;
+  text-shadow: 0 0 12px rgba(193,27,31,0.7);
+  animation: logoPulse 2.8s ease-in-out infinite;
+}
+@keyframes logoPulse {
+  0%,100%{ text-shadow: 0 0 10px rgba(193,27,31,0.7), 0 0 24px rgba(193,27,31,0.35); }
+  50%    { text-shadow: 0 0 16px rgba(193,27,31,1),   0 0 40px rgba(193,27,31,0.55); }
+}
+.intro-sub {
+  color: #A8A6A7; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-family: "Avant Garde", Avantgarde, "Century Gothic", sans-serif;
+  margin-bottom: 5px; animation: flk 3s linear infinite;
+}
+.intro-dept {
+  color: rgba(168,166,167,0.4); font-size: 9.5px; letter-spacing: 0.11em; text-transform: uppercase;
+  font-family: "Avant Garde", Avantgarde, "Century Gothic", sans-serif;
+  line-height: 1.9; margin-bottom: 26px;
+}
+@keyframes flk { 0%,93%,97%,100%{opacity:1} 95%{opacity:0.5} }
+
+/* Play button — exact original */
+.intro-text-play {
+  display: block; cursor: pointer;
+  width: 120px; height: 120px; margin: 0 auto;
+  border: 4px solid #fff; font-size: 40px; text-indent: 10px;
+  line-height: 116px; color: #fff; background: rgba(85,85,85,0.2);
+  opacity: 0.3; border-radius: 100%;
+  transition: color 100ms ease, opacity 100ms ease, border-color 100ms ease;
+  transform: translateZ(0);
+}
+.intro-text-play:hover, .intro-text-play:focus, .intro-text-play:active {
+  opacity: 1; color: #C11B1F; border-color: #C11B1F;
+  box-shadow: 0 0 28px rgba(193,27,31,0.5); outline: none;
+}
+
+/* =====================================================
+   VIEWPORT
+===================================================== */
+.viewport {
+  height: 100vh; width: 100vw;
+  -webkit-user-select: none; user-select: none;
+  display: none;
+}
+.viewport--show { display: block; }
+
+/* =====================================================
+   TITLE BASE — exact original wbobeirne
+===================================================== */
+.title {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-45%);
+  width: 100%; font-size: 0;
+  font-family: "BenguiatITCW01-BoldCn", Georgia, serif;
+  color: #000; letter-spacing: -1.3vmin; font-weight: bold;
+  display: none;
+  -webkit-text-stroke-color: #C11B1F;
+  -webkit-text-stroke-width: 0.4vmin;
+  text-shadow: 0 0 2vmin rgba(193,27,31,0.5);
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title { -webkit-text-stroke-width: 0.225vw; }
+}
+.title--show { display: block; }
+
+/* =====================================================
+   TITLE WORDS — exact original
+===================================================== */
+.title-word {
+  position: relative;
+  display: inline-block;
+}
+/* KEY: second word shifts up by 38% — original value, works with inline-block */
+.title-word--second {
+  transform: translateY(-38%);
+}
+.title-word-letter {
+  display: inline-block; position: relative;
+  vertical-align: top; font-size: 28vmin;
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title-word-letter { font-size: 15.75vw; }
+}
+.title-word-letter-large {
+  display: inline-block;
+  transform: translateY(-2.8%);
+  font-size: 34vmin;
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title-word-letter-large { font-size: 19.125vw; }
+}
+
+/* =====================================================
+   TITLEBARS — exact original
+===================================================== */
+.titlebar {
+  position: absolute;
+  border-style: solid; border-color: #C11B1F;
+  height: 1vmin; border-width: 0.4vmin; border-radius: 0.1vmin;
+  box-shadow: 0 0 1.2vmin rgba(193,27,31,0.8), 0 0 0.5vmin rgba(193,27,31,0.8) inset;
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .titlebar { height: 0.5625vw; border-width: 0.225vw; border-radius: 0.05625vw; }
+}
+.titlebar--top  { bottom: 100%; width: 100%; }
+.titlebar--left, .titlebar--right { top: 90%; }
+.titlebar--left  { left: 0; right: -12%; }
+.titlebar--right { left: -15%; right: 0; }
+
+/* =====================================================
+   FULL TITLE — exact original animation
+   scale(0.06) at end is original — final screen is
+   OUTSIDE this container so it never shrinks
+===================================================== */
+.title--full {
+  width: 1000vw;
+  animation: full-title 20s cubic-bezier(0.15,0.7,0.26,0.88) forwards;
+  transform-origin: 50% 45%;
+}
+@keyframes full-title {
+  0%  { opacity:1; transform: translateX(-50%) translateY(-41%) scale(0.8); }
+  90% { opacity:1; }
+  100%{ opacity:0; transform: translateX(-50%) translateY(-45%) scale(0.06); }
+}
+
+/* Full-title letter sizes — exact original */
+.title--full .title-word-letter[data-letter] { font-size: 280vmin; }
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--full .title-word-letter[data-letter] { font-size: 157.5vw; }
+}
+.title--full .title-word-letter[data-letter] .title-word-letter-large { font-size: 340vmin; }
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--full .title-word-letter[data-letter] .title-word-letter-large { font-size: 191.25vw; }
+}
+/* stroke on full title letters */
+.title--full .title-word-letter[data-letter] {
+  -webkit-text-stroke-width: 4vmin;
+  text-shadow: 0 0 20vmin rgba(193,27,31,0.5);
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--full .title-word-letter[data-letter] { -webkit-text-stroke-width: 2.25vw; }
+}
+
+/* Per-letter fly-in keyframes — exact original names & values */
+@keyframes full-s1 { 0%,50%{ transform:translateX(-200%); } 76%,100%{ transform:translateX(0%); } }
+@keyframes full-t1 { 0%,40%{ transform:translateY(-120%); } 75%,100%{ transform:translateY(0%); } }
+@keyframes full-r1 { 0%,25%{ transform:translateX(-55%);  } 72%,100%{ transform:translateX(0%); } }
+@keyframes full-a  { 0%{    transform:translateX(-15%);   } 40%,100%{ transform:translateX(0%); } }
+@keyframes full-n1 { 0%{    transform:translateX(15%);    } 40%,100%{ transform:translateX(0%); } }
+@keyframes full-g1 { 0%{    transform:translateX(30%);    } 55%,100%{ transform:translateX(0%); } }
+@keyframes full-e  { 0%,50%{ transform:translateY(-120%); } 75%,100%{ transform:translateY(0%); } }
+@keyframes full-r2 { 0%,45%{ transform:translateX(200%);  } 71%,100%{ transform:translateX(0%); } }
+@keyframes full-t2 { 0%,30%{ transform:translateX(-80%);  } 60%,100%{ transform:translateX(0%); } }
+@keyframes full-h  { 0%,36%{ transform:translateY(200%);  } 76%,100%{ transform:translateY(0%); } }
+@keyframes full-i  { 0%,25%{ transform:translateX(-70%);  } 75%,100%{ transform:translateX(0%); } }
+@keyframes full-n2 { 0%,10%{ transform:translateY(70%);   } 40%,100%{ transform:translateY(0%); } }
+@keyframes full-g2 { 0%{    transform:translateX(30%);    } 45%,100%{ transform:translateX(0%); } }
+@keyframes full-s2 { 0%,40%{ transform:translateY(200%);  } 80%,100%{ transform:translateY(0%); } }
+@keyframes full-bar-top  { 0%,67%{ transform:scaleX(0); } 72%,100%{ transform:scaleX(1); } }
+@keyframes full-bar-side { 0%,70%{ transform:scaleX(0); } 75%,100%{ transform:scaleX(1); } }
+
+/* Per-letter animation bindings */
+.title--full .title-word-letter[data-letter=S1] { animation: full-s1 20s ease forwards; }
+.title--full .title-word-letter[data-letter=T1] { animation: full-t1 20s ease forwards; }
+.title--full .title-word-letter[data-letter=R1] { animation: full-r1 20s ease forwards; }
+.title--full .title-word-letter[data-letter=A]  { animation: full-a  20s ease forwards; }
+.title--full .title-word-letter[data-letter=N1] { animation: full-n1 20s ease forwards; letter-spacing: -15vmin; }
+.title--full .title-word-letter[data-letter=G1] { animation: full-g1 20s ease forwards; }
+.title--full .title-word-letter[data-letter=E]  { animation: full-e  20s ease forwards; }
+.title--full .title-word-letter[data-letter=R2] { animation: full-r2 20s ease forwards; }
+.title--full .title-word-letter[data-letter=T2] { animation: full-t2 20s ease forwards; }
+.title--full .title-word-letter[data-letter=H]  { animation: full-h  20s ease forwards; }
+.title--full .title-word-letter[data-letter=I]  { animation: full-i  20s ease forwards; }
+.title--full .title-word-letter[data-letter=N2] { animation: full-n2 20s ease forwards; letter-spacing: -15vmin; }
+.title--full .title-word-letter[data-letter=G2] { animation: full-g2 20s ease forwards; }
+.title--full .title-word-letter[data-letter=S2] { animation: full-s2 20s ease forwards; }
+
+/* Titlebar animations on full title */
+.title--full .titlebar {
+  height: 10vmin; border-width: 4vmin; border-radius: 1vmin;
+  box-shadow: 0 0 12vmin rgba(193,27,31,0.8), 0 0 5vmin rgba(193,27,31,0.8) inset;
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--full .titlebar { height:5.625vw; border-width:2.25vw; border-radius:0.5625vw; }
+}
+.title--full .titlebar--top   { animation: full-bar-top  20s ease forwards; }
+.title--full .titlebar--left  { animation: full-bar-side 20s ease forwards; transform-origin: right; }
+.title--full .titlebar--right { animation: full-bar-side 20s ease forwards; transform-origin: left; }
+
+/* =====================================================
+   SCENE ANIMATIONS — exact original keyframes
+===================================================== */
+.title--scene .title-word {
+  position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+/* Scene 1 — E zooms out */
+@keyframes scene1 {
+  0%  { transform: translateX(-43.85%) translateY(-40%) scale(2.2); }
+  100%{ transform: translateX(-43.85%) translateY(-40%) scale(1);   }
+}
+.title--scene1 .title-word-letter[data-letter=A] {
+  font-size: 1680vmin; position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  animation: scene1 7000ms ease-out forwards; transform-origin: 43.85% 40%;
+  -webkit-text-stroke-width: 24vmin; text-shadow: 0 0 120vmin rgba(193,27,31,0.5);
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--scene1 .title-word-letter[data-letter=A] { font-size:945vw; -webkit-text-stroke-width:13.5vw; }
+}
+
+/* Scene 2 — P drifts */
+@keyframes scene2-word   { 0%{ transform:translateX(-68%) translateY(-41%); } 100%{ transform:translateX(-68%) translateY(-38%); } }
+@keyframes scene2-letter { 0%{ transform:scale(1); } 100%{ transform:scale(0.92); } }
+.title--scene2 .title-word { animation: scene2-word 3000ms linear forwards; }
+.title--scene2 .title-word-letter[data-letter=N] {
+  font-size: 560vmin;
+  animation: scene2-letter 3000ms linear forwards; transform-origin: 68.4% 40%;
+  -webkit-text-stroke-width: 8vmin; text-shadow: 0 0 40vmin rgba(193,27,31,0.5);
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--scene2 .title-word-letter[data-letter=N] { font-size:315vw; -webkit-text-stroke-width:4.5vw; }
+}
+
+/* Scene 3 — S + I */
+@keyframes scene3-r { 0%{ transform:translateX(-78%) translateY(-30%) scale(0.95); } 100%{ transform:translateX(-81%) translateY(-30%) scale(0.84); } }
+@keyframes scene3-i { 0%{ transform:translateX(15%) translateY(-50%); } 100%{ transform:translateX(35%) translateY(-50%); } }
+.title--scene3 .title-word-letter[data-letter=R] {
+  font-size: 644vmin; position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  animation: scene3-r 3000ms linear forwards; transform-origin: 75% 27%;
+  -webkit-text-stroke-width: 9.2vmin; text-shadow: 0 0 46vmin rgba(193,27,31,0.5);
+}
+.title--scene3 .title-word-letter[data-letter=I] {
+  font-size: 644vmin; position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  animation: scene3-i 3000ms linear forwards;
+  -webkit-text-stroke-width: 9.2vmin; text-shadow: 0 0 46vmin rgba(193,27,31,0.5);
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--scene3 .title-word-letter[data-letter=R],
+  .title--scene3 .title-word-letter[data-letter=I] { font-size:362.25vw; -webkit-text-stroke-width:5.175vw; }
+}
+
+/* Scene 4 — L + O */
+@keyframes scene4-word { 0%{ transform:translateX(-50%) translateY(-50%) scale(1); } 100%{ transform:translateX(-50%) translateY(-50%) scale(0.9); } }
+@keyframes scene4-s    { 0%{ transform:translateX(-53%) translateY(-11%); } 100%{ transform:translateX(-65%) translateY(-11%); } }
+@keyframes scene4-g    { 0%{ transform:translateX(-42%) translateY(-90%); } 100%{ transform:translateX(-34%) translateY(-90%); } }
+.title--scene4 .title-word { animation: scene4-word 3000ms linear forwards; }
+.title--scene4 .title-word-letter[data-letter=S] {
+  font-size: 504vmin; position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  animation: scene4-s 3000ms linear forwards;
+  -webkit-text-stroke-width: 7.2vmin; text-shadow: 0 0 36vmin rgba(193,27,31,0.5);
+}
+.title--scene4 .title-word-letter[data-letter=G] {
+  font-size: 504vmin; position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  animation: scene4-g 3000ms linear forwards;
+  -webkit-text-stroke-width: 7.2vmin; text-shadow: 0 0 36vmin rgba(193,27,31,0.5);
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--scene4 .title-word-letter[data-letter=S],
+  .title--scene4 .title-word-letter[data-letter=G] { font-size:283.5vw; -webkit-text-stroke-width:4.05vw; }
+}
+
+/* Scene 5 — 2 + K */
+@keyframes scene5-r { 0%{ transform:translateX(-118%) translateY(-30%); } 100%{ transform:translateX(-112%) translateY(-34%); } }
+@keyframes scene5-s { 0%{ transform:translateX(-19%)  translateY(-28.5%); } 100%{ transform:translateX(-22%) translateY(-32%); } }
+.title--scene5 .title-word-letter[data-letter=R] {
+  font-size: 392vmin; position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  animation: scene5-r 3000ms linear forwards;
+  -webkit-text-stroke-width: 5.6vmin; text-shadow: 0 0 28vmin rgba(193,27,31,0.5);
+}
+.title--scene5 .title-word-letter[data-letter=S] {
+  font-size: 392vmin; position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  animation: scene5-s 3000ms linear forwards;
+  -webkit-text-stroke-width: 5.6vmin; text-shadow: 0 0 28vmin rgba(193,27,31,0.5);
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--scene5 .title-word-letter[data-letter=R],
+  .title--scene5 .title-word-letter[data-letter=S] { font-size:220.5vw; -webkit-text-stroke-width:3.15vw; }
+}
+
+/* Scene 6 — 26 cross-dissolve */
+@keyframes scene6-fade-out { 0%,40%{opacity:1} 85%,100%{opacity:0} }
+@keyframes scene6-fade-in  { 0%,40%{opacity:0} 85%,100%{opacity:1} }
+@keyframes scene6-i { 0%{ transform:translateX(-105%) translateY(-91%); } 85%,100%{ transform:translateX(-135%) translateY(-85%); } }
+@keyframes scene6-a { 0%{ transform:translateX(14%)   translateY(-91%); } 85%,100%{ transform:translateX(34%)   translateY(-85%); } }
+@keyframes scene6-t { 0%{ transform:translateX(-134%) translateY(-7%);  } 85%,100%{ transform:translateX(-111%) translateY(-1%);  } }
+@keyframes scene6-h { 0%{ transform:translateX(24%)   translateY(-7%);  } 85%,100%{ transform:translateX(15%)   translateY(-1%);  } }
+@keyframes scene6-n { 0%,40%{ transform:translateX(-170%) translateY(-50%); } 100%{ transform:translateX(-147%) translateY(-50%); } }
+@keyframes scene6-g { 0%,40%{ transform:translateX(82%)   translateY(-50%); } 100%{ transform:translateX(49%)   translateY(-50%);  } }
+.title--scene6 .title-word-letter[data-letter=I] { font-size:224vmin; position:absolute; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); animation:scene6-i 6s linear forwards,scene6-fade-out 6s linear forwards; -webkit-text-stroke-width:3.2vmin; }
+.title--scene6 .title-word-letter[data-letter=A] { font-size:224vmin; position:absolute; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); animation:scene6-a 6s linear forwards,scene6-fade-out 6s linear forwards; -webkit-text-stroke-width:3.2vmin; }
+.title--scene6 .title-word-letter[data-letter=T] { font-size:224vmin; position:absolute; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); animation:scene6-t 6s linear forwards,scene6-fade-out 6s linear forwards; -webkit-text-stroke-width:3.2vmin; }
+.title--scene6 .title-word-letter[data-letter=H] { font-size:224vmin; position:absolute; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); animation:scene6-h 6s linear forwards,scene6-fade-out 6s linear forwards; -webkit-text-stroke-width:3.2vmin; }
+.title--scene6 .title-word-letter[data-letter=N] { font-size:84vmin; position:absolute; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); animation:scene6-n 6s linear forwards,scene6-fade-in 6s linear forwards; -webkit-text-stroke-width:1.2vmin; }
+.title--scene6 .title-word-letter[data-letter=G] { font-size:84vmin; position:absolute; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); animation:scene6-g 6s linear forwards,scene6-fade-in 6s linear forwards; -webkit-text-stroke-width:1.2vmin; }
+@media screen and (max-aspect-ratio: 16/9) {
+  .title--scene6 .title-word-letter[data-letter=I],
+  .title--scene6 .title-word-letter[data-letter=A],
+  .title--scene6 .title-word-letter[data-letter=T],
+  .title--scene6 .title-word-letter[data-letter=H] { font-size:126vw; -webkit-text-stroke-width:1.8vw; }
+  .title--scene6 .title-word-letter[data-letter=N],
+  .title--scene6 .title-word-letter[data-letter=G] { font-size:47.25vw; -webkit-text-stroke-width:0.675vw; }
+}
+
+/* =====================================================
+   CREDITS — exact original
+===================================================== */
+.credits {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  font-family: "Avant Garde", Avantgarde, "Century Gothic", sans-serif;
+  font-weight: bold; font-size: 6vmin; pointer-events: none;
+}
+@media screen and (max-aspect-ratio: 16/9) { .credits { font-size: 3.375vw; } }
+
+@keyframes credits-wiggle {
+  0%  { transform: translateX(-50%) translateY(-50%) translate(0,0); }
+  20% { transform: translateX(-50%) translateY(-50%) translate(0,-0.015vmin); }
+  40% { transform: translateX(-50%) translateY(-50%) translate(0.015vmin,-0.015vmin); }
+  60% { transform: translateX(-50%) translateY(-50%) translate(0,0.015vmin); }
+  80% { transform: translateX(-50%) translateY(-50%) translate(-0.015vmin,0); }
+  100%{ transform: translateX(-50%) translateY(-50%) translate(-0.015vmin,0.015vmin); }
+}
+@keyframes credits-flash {
+  0%,30%{ opacity:1; } 40%{ opacity:0.97; } 42%,85%{ opacity:1; } 92%{ opacity:0.94; } 94%,100%{ opacity:1; }
+}
+
+.credits-group {
+  position: absolute; top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 90%; opacity: 0; transition: opacity 300ms ease;
+}
+.credits-group--show {
+  opacity: 1; transition-delay: 300ms;
+  animation: credits-wiggle 200ms infinite 300ms, credits-flash 2200ms infinite 300ms;
+}
+.credits-group-credit, .credits-group-sub {
+  position: relative;
+  color: #A8A6A7;
+  background: linear-gradient(#B2B0B1, #A8A6A7);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.credits-group-credit::after, .credits-group-sub::after {
+  content: attr(data-text); position: absolute;
+  z-index: -1; width: 100%; top: 0; left: 0;
+  background: none;
+  text-shadow: 0.3vmin 0.3vmin 0.15vmin #000;
+  -webkit-text-fill-color: transparent;
+}
+.credits-group-credit { font-weight: 800; text-transform: uppercase; }
+.credits-group-sub    { font-size: 4.6vmin; }
+@media screen and (max-aspect-ratio: 16/9) { .credits-group-sub { font-size: 2.5875vw; } }
+
+/* =====================================================
+   FINAL SCREEN
+   CRITICAL: position:fixed on <body>, z-index above
+   viewport. NEVER inside .viewport or .credits.
+   This means it is 100% isolated from scale(0.06).
+   Fade-in only — no shrink, no zoom-out.
+===================================================== */
+#finalScreen {
+  position: fixed;           /* fixed to viewport — unaffected by any parent */
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 520px);
+  z-index: 5000;             /* above viewport (which has no z-index), below skip (10000) */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 600ms ease, visibility 0ms linear 650ms;
+  text-align: center;
+  pointer-events: none;
+}
+#finalScreen.show {
+  opacity: 1; visibility: visible;
+  transition: opacity 600ms ease; transition-delay: 0ms;
+  pointer-events: auto;
+  /* Subtle float — NO scale, NO shrink */
+  animation: finalFloat 200ms linear infinite 600ms, finalFlash 2200ms linear infinite 600ms;
+}
+@keyframes finalFloat {
+  0%  { transform: translate(-50%,-50%) translate(0,0); }
+  20% { transform: translate(-50%,-50%) translate(0,-0.015vmin); }
+  40% { transform: translate(-50%,-50%) translate(0.015vmin,-0.015vmin); }
+  60% { transform: translate(-50%,-50%) translate(0,0.015vmin); }
+  80% { transform: translate(-50%,-50%) translate(-0.015vmin,0); }
+  100%{ transform: translate(-50%,-50%) translate(-0.015vmin,0.015vmin); }
+}
+@keyframes finalFlash {
+  0%,30%{ opacity:1; } 40%{ opacity:0.97; } 42%,85%{ opacity:1; } 92%{ opacity:0.94; } 94%,100%{ opacity:1; }
+}
+
+/* Final title — Benguiat, solid red (matches logo image) */
+.final-title {
+  font-family: "BenguiatITCW01-BoldCn", Georgia, serif;
+  font-weight: bold;
+  color: #C11B1F;
+  -webkit-text-fill-color: #C11B1F;
+  background: none;
+  text-shadow: 0 0 14px rgba(193,27,31,0.85), 0 0 40px rgba(193,27,31,0.35);
+  font-size: clamp(2.8rem, 16vmin, 16vmin);
+  line-height: 0.88; letter-spacing: -0.03em;
+  margin-bottom: clamp(10px, 2.5vmin, 24px);
+}
+@media screen and (max-aspect-ratio: 16/9) {
+  .final-title { font-size: clamp(2.8rem, 9vw, 9vw); }
+}
+
+.final-sub {
+  font-family: "Avant Garde", Avantgarde, "Century Gothic", sans-serif;
+  font-size: clamp(0.55rem, 2.4vmin, 1rem);
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: #A8A6A7; -webkit-text-fill-color: #A8A6A7; background: none;
+  margin-bottom: clamp(3px, 0.5vmin, 8px);
+}
+.final-date {
+  font-family: "Avant Garde", Avantgarde, "Century Gothic", sans-serif;
+  font-size: clamp(0.7rem, 3.2vmin, 1.4rem);
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: #C11B1F; -webkit-text-fill-color: #C11B1F; background: none;
+  text-shadow: 0 0 14px rgba(193,27,31,0.8);
+  margin: clamp(8px,1.8vmin,18px) 0 clamp(3px,0.5vmin,8px);
+}
+.final-venue {
+  font-family: "Avant Garde", Avantgarde, "Century Gothic", sans-serif;
+  font-size: clamp(0.5rem, 2vmin, 0.88rem);
+  letter-spacing: 0.13em; text-transform: uppercase;
+  color: rgba(168,166,167,0.5); -webkit-text-fill-color: rgba(168,166,167,0.5); background: none;
+  line-height: 1.8; margin-bottom: clamp(12px,2.5vmin,26px);
+}
+/* Enter — transparent background, red border only, no contrast fill */
+.final-enter {
+  display: inline-block;
+  font-family: "Avant Garde", Avantgarde, "Century Gothic", sans-serif;
+  font-size: clamp(0.55rem, 2.2vmin, 0.92rem);
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: #C11B1F; -webkit-text-fill-color: #C11B1F; background: transparent;
+  text-shadow: 0 0 10px rgba(193,27,31,0.6);
+  border: 1px solid rgba(193,27,31,0.5);
+  padding: clamp(6px,0.9vmin,12px) clamp(14px,2.8vmin,28px);
+  text-decoration: none; border-radius: 2px;
+  transition: border-color 0.2s, text-shadow 0.2s;
+}
+.final-enter:hover {
+  border-color: rgba(193,27,31,0.9);
+  text-shadow: 0 0 20px rgba(193,27,31,1), 0 0 40px rgba(193,27,31,0.35);
+}
+
+/* =====================================================
+   OVERLAYS — grain, vignette, letterbox (exact original)
+===================================================== */
+@keyframes grain-wiggle {
+  0%  { transform:translateX(8%)   translateY(-5%);  }
+  10% { transform:translateX(0%)   translateY(0%);   }
+  20% { transform:translateX(10%)  translateY(-15%); }
+  30% { transform:translateX(-10%) translateY(0%);   }
+  40% { transform:translateX(25%)  translateY(15%);  }
+  50% { transform:translateX(10%)  translateY(-10%); }
+  60% { transform:translateX(-5%)  translateY(5%);   }
+  70% { transform:translateX(15%)  translateY(0%);   }
+  80% { transform:translateX(-20%) translateY(-10%); }
+  90% { transform:translateX(20%)  translateY(15%);  }
+  100%{ transform:translateX(4%)   translateY(7%);   }
+}
+.grain {
+  position: fixed; top:-50vh; left:-50vw; height:200vh; width:200vw;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  animation: grain-wiggle 5s steps(10) infinite;
+  pointer-events: none; z-index: 900; mix-blend-mode: overlay; opacity: 0.8;
+}
+.vignette {
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 52%, rgba(0,0,0,0.9) 100%);
+  pointer-events: none; z-index: 800;
+}
+.letterbox {
+  position: fixed; top:50%; left:50%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 100vh; width: 177.7778vh;
+  pointer-events: none; display: none; z-index: 850;
+}
+.letterbox--show { display: block; }
+@media screen and (max-aspect-ratio: 16/9) { .letterbox { height:56.25vw; width:100vw; } }
+.letterbox-cover { position:absolute; width:5000px; height:5000px; background:#000; }
+.letterbox-cover--top, .letterbox-cover--bottom { left:50%; transform:translateX(-50%); }
+.letterbox-cover--left,  .letterbox-cover--right  { top:50%; transform:translateY(-50%); }
+.letterbox-cover--top    { bottom:100%; }
+.letterbox-cover--left   { right:100%; }
+.letterbox-cover--right  { left:100%; }
+.letterbox-cover--bottom { top:100%; }
+
+</style>
+</head>
+<body>
+
+<!-- SKIP BUTTON -->
+<button id="skipBtn" aria-label="Skip intro">
+  <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
+  Skip
+</button>
+
+<!-- ===================================================
+     SPLASH SCREEN
+=================================================== -->
+<div class="intro" id="intro">
+  <div class="intro-title">EPSILON<br/>2K26</div>
+  <div class="intro-sub">National Level Technical Symposium</div>
+  <div class="intro-dept">
+    Dept. of Electrical &amp; Electronics Engineering<br/>
+    Meenakshi Sundararajan Engineering College
+  </div>
+  <button class="intro-text-play" id="playBtn">&#9654;</button>
+</div>
+
+<!-- ===================================================
+     VIEWPORT  (everything inside here can shrink/zoom
+     via the full-title animation — that's fine because
+     the final screen lives OUTSIDE this element)
+=================================================== -->
+<div class="viewport" id="viewport">
+
+  <!-- FULL TITLE: EPSILON over 2K26 — exact original HTML structure -->
+  <div class="title title--full" id="fullTitle">
+
+    <!-- Word 1: EPSILON -->
+    <!-- S1=E (large, from left), T1=P (from top), R1=S, A=I, N1=L, G1=O, E=N (from top) -->
+    <div class="title-word">
+      <span class="title-word-letter" data-letter="S1">
+        <span class="title-word-letter-large">E</span>
+      </span><!--
+   --><span class="title-word-letter" data-letter="T1">P</span><!--
+   --><span class="title-word-letter" data-letter="R1">S</span><!--
+   --><span class="title-word-letter" data-letter="A">I</span><!--
+   --><span class="title-word-letter" data-letter="N1">L</span><!--
+   --><span class="title-word-letter" data-letter="G1">O</span><!--
+   --><span class="title-word-letter" data-letter="E">
+        <span class="title-word-letter-large">N</span>
+      </span>
+      <div class="titlebar titlebar--top"></div>
+    </div>
+
+    <!-- Word 2: 2K26 — translateY(-38%) pulls it up to overlap word 1 -->
+    <!-- T2=2 (from left), H=K (from bottom), I=2 (from left), S2=6 (large, from bottom) -->
+    <div class="title-word title-word--second">
+      <span class="title-word-letter" data-letter="T2">2</span><!--
+   --><span class="title-word-letter" data-letter="H">K</span><!--
+   --><span class="title-word-letter" data-letter="I">2</span><!--
+   --><span class="title-word-letter" data-letter="S2">
+        <span class="title-word-letter-large">6</span>
+      </span>
+      <div class="titlebar titlebar--left"></div>
+      <div class="titlebar titlebar--right"></div>
+    </div>
+
+  </div><!-- /fullTitle -->
+
+  <!-- SCENES -->
+  <div class="title title--scene title--scene0"></div>
+
+  <div class="title title--scene title--scene1">
+    <div class="title-word">
+      <div class="title-word-letter" data-letter="A">E</div>
+    </div>
+  </div>
+
+  <div class="title title--scene title--scene2">
+    <div class="title-word">
+      <div class="title-word-letter" data-letter="N">P</div>
+    </div>
+  </div>
+
+  <div class="title title--scene title--scene3">
+    <div class="title-word">
+      <div class="title-word-letter" data-letter="R">S</div>
+      <div class="title-word-letter" data-letter="I">I</div>
+    </div>
+  </div>
+
+  <div class="title title--scene title--scene4">
+    <div class="title-word">
+      <div class="title-word-letter" data-letter="S">L</div>
+      <div class="title-word-letter" data-letter="G">O</div>
+    </div>
+  </div>
+
+  <div class="title title--scene title--scene5">
+    <div class="title-word">
+      <div class="title-word-letter" data-letter="R">2</div>
+      <div class="title-word-letter" data-letter="S">K</div>
+    </div>
+  </div>
+
+  <div class="title title--scene title--scene6">
+    <div class="title-word">
+      <div class="title-word-letter" data-letter="I">2</div>
+      <div class="title-word-letter" data-letter="A">6</div>
+      <div class="title-word-letter" data-letter="T">2</div>
+      <div class="title-word-letter" data-letter="H">6</div>
+      <div class="title-word-letter" data-letter="N">2</div>
+      <div class="title-word-letter" data-letter="G">6</div>
+    </div>
+  </div>
+
+  <!-- CREDITS -->
+  <div class="credits">
+    <div class="credits-group" id="cg0">
+      <div class="credits-group-credit" data-text="EPSILON 2K26">EPSILON 2K26</div>
+    </div>
+    <div class="credits-group" id="cg1">
+      <div class="credits-group-sub" data-text="Presents">Presents</div>
+      <div class="credits-group-credit" data-text="A National Level Technical Symposium">A National Level Technical Symposium</div>
+    </div>
+    <div class="credits-group" id="cg2">
+      <div class="credits-group-sub" data-text="Organised By">Organised By</div>
+      <div class="credits-group-credit" data-text="Department of EEE">Department of EEE</div>
+    </div>
+    <div class="credits-group" id="cg3">
+      <div class="credits-group-credit" data-text="Meenakshi Sundararajan">Meenakshi Sundararajan</div>
+      <div class="credits-group-credit" data-text="Engineering College">Engineering College</div>
+    </div>
+    <div class="credits-group" id="cg4">
+      <div class="credits-group-sub" data-text="Date">Date</div>
+      <div class="credits-group-credit" data-text="March 16, 2026">March 16, 2026</div>
+    </div>
+    <div class="credits-group" id="cg5">
+      <div class="credits-group-sub" data-text="Venue">Venue</div>
+      <div class="credits-group-credit" data-text="MSEC · Chennai">MSEC · Chennai</div>
+    </div>
+    <div class="credits-group" id="cg6">
+      <div class="credits-group-sub" data-text="Contact">Contact</div>
+      <div class="credits-group-credit" data-text="epsilon2k26@gmail.com">epsilon2k26@gmail.com</div>
+    </div>
+    <div class="credits-group" id="cg7">
+      <div class="credits-group-sub" data-text="Are You Ready?">Are You Ready?</div>
+      <div class="credits-group-credit" data-text="The Upside Down Awaits">The Upside Down Awaits</div>
+    </div>
+  </div><!-- /credits -->
+
+</div><!-- /viewport -->
+
+<!-- ===================================================
+     FINAL SCREEN — lives on <body>, fixed positioning
+     Completely isolated from viewport's scale animation
+=================================================== -->
+<div id="finalScreen">
+  <div class="final-title">EPSILON<br/>2K26</div>
+  <div class="final-sub">National Level Technical Symposium</div>
+  <div class="final-date">March 16, 2026</div>
+  <div class="final-venue">
+    Dept. of EEE &nbsp;·&nbsp; Meenakshi Sundararajan Engineering College<br/>Chennai
+  </div>
+  <a href="/" class="final-enter" id="enterBtn">Enter &nbsp;&#9658;</a>
+</div>
+
+<!-- OVERLAYS -->
+<div class="vignette"></div>
+<div class="grain"></div>
+<div class="letterbox" id="letterbox">
+  <div class="letterbox-cover letterbox-cover--top"></div>
+  <div class="letterbox-cover letterbox-cover--left"></div>
+  <div class="letterbox-cover letterbox-cover--right"></div>
+  <div class="letterbox-cover letterbox-cover--bottom"></div>
+</div>
+
+<script>
+/* =====================================================
+   EPSILON 2K26 — Controller
+   Final screen is position:fixed on body → never
+   affected by the viewport scale(0.06) shrink.
+===================================================== */
+const introEl    = document.getElementById('intro');
+const viewportEl = document.getElementById('viewport');
+const lbEl       = document.getElementById('letterbox');
+const fullTitle  = document.getElementById('fullTitle');
+const finalEl    = document.getElementById('finalScreen');
+const skipBtn    = document.getElementById('skipBtn');
+const enterBtn   = document.getElementById('enterBtn');
+
+const scenes  = Array.from(document.querySelectorAll('.title--scene'));
+const cgIds   = ['cg0','cg1','cg2','cg3','cg4','cg5','cg6','cg7'];
+const credits = cgIds.map(id => document.getElementById(id));
+
+const BEAT = 3000;
+const SCENE_DUR = [BEAT, BEAT*2, BEAT, BEAT, BEAT, BEAT, BEAT*2]; // 36 000 ms total
+
+let timers  = [];
+let started = false;
+const T = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); };
+
+/* Enter */
+enterBtn.addEventListener('click', e => {
+  e.preventDefault();
+  document.body.style.transition = 'opacity 600ms';
+  document.body.style.opacity = '0';
+  setTimeout(() => { window.location.href = '/'; }, 660);
+});
+
+/* Play */
+document.getElementById('playBtn').addEventListener('click',    go);
+document.getElementById('playBtn').addEventListener('touchend', e => { e.preventDefault(); go(); });
+document.addEventListener('keydown', e => { if(e.code==='Space'||e.code==='Enter') go(); });
+
+/* Skip */
+skipBtn.addEventListener('click',    skip);
+skipBtn.addEventListener('touchend', e => { e.preventDefault(); skip(); });
+
+function go() {
+  if (started) return;
+  started = true;
+  introEl.classList.add('intro--hide');
+  T(run, 900);
+}
+
+function skip() {
+  timers.forEach(clearTimeout); timers = [];
+  introEl.classList.add('intro--hide');
+  scenes.forEach(s => s.classList.remove('title--show'));
+  credits.forEach(c => c.classList.remove('credits-group--show'));
+  fullTitle.classList.remove('title--show');
+  viewportEl.classList.add('viewport--show');
+  lbEl.classList.add('letterbox--show');
+  skipBtn.classList.remove('vis');
+  T(() => finalEl.classList.add('show'), 60);
+}
+
+function run() {
+  viewportEl.classList.add('viewport--show');
+  lbEl.classList.add('letterbox--show');
+  skipBtn.classList.add('vis');
+
+  /* Credits — one per BEAT */
+  credits.forEach((c, i) => {
+    T(() => {
+      if (i > 0) credits[i-1].classList.remove('credits-group--show');
+      c.classList.add('credits-group--show');
+    }, i * BEAT);
+    if (i === credits.length - 1)
+      T(() => c.classList.remove('credits-group--show'), i * BEAT + BEAT);
+  });
+
+  /* Scenes */
+  let off = 0;
+  scenes.forEach((s, i) => {
+    T(() => {
+      if (i > 0) scenes[i-1].classList.remove('title--show');
+      s.classList.add('title--show');
+    }, off);
+    off += SCENE_DUR[i];
+  });
+
+  /* After scenes → show full title, hide skip */
+  T(() => {
+    scenes[scenes.length-1].classList.remove('title--show');
+    fullTitle.classList.add('title--show');
+    skipBtn.classList.remove('vis');
+  }, off);
+
+  /* Final screen fades in at 18.5 s after full-title starts
+     (title opacity reaches 0 at 20 s, so final is already visible) */
+  T(() => finalEl.classList.add('show'), off + 18500);
+}
+</script>
+</body>
+</html>
