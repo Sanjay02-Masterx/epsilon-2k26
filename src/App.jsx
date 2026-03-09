@@ -1,5 +1,6 @@
 import { BrowserRouter, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 import AppRoutes     from "./routes/AppRoutes";
 import Navbar        from "./components/common/Navbar";
@@ -49,6 +50,7 @@ function AppLayout() {
       <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
       <AppRoutes />
       <Footer />
+      <Analytics />
     </>
   );
 }
