@@ -749,6 +749,10 @@ export default function Home() {
           object-fit: cover; object-position: center;
           z-index: 0;           /* FIX: was -20 */
           pointer-events: none;
+          /* Hardware acceleration for smoother video playback */
+          will-change: transform;
+          transform: translateZ(0);
+          backface-visibility: hidden;
         }
         .home-overlay-dark {
           position: fixed; inset: 0;
