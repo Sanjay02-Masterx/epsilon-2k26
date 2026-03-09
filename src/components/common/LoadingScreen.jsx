@@ -77,11 +77,11 @@ export default function LoadingScreen({ onComplete }) {
   // ── Phase sequencer ───────────────────────────────────────────────────────
   useEffect(() => {
     const t = [
-      setTimeout(() => mountedRef.current && setPhase(1), 300),
-      setTimeout(() => mountedRef.current && setPhase(2), 950),
-      setTimeout(() => mountedRef.current && setPhase(3), 1700),
-      setTimeout(() => mountedRef.current && setFadeOut(true), 2500),
-      setTimeout(() => done(), 2850),
+      setTimeout(() => mountedRef.current && setPhase(1), 50),
+      setTimeout(() => mountedRef.current && setPhase(2), 250),
+      setTimeout(() => mountedRef.current && setPhase(3), 600),
+      setTimeout(() => mountedRef.current && setFadeOut(true), 1200),
+      setTimeout(() => done(), 1500),
     ];
     return () => t.forEach(clearTimeout);
   }, [done]);
@@ -138,10 +138,10 @@ export default function LoadingScreen({ onComplete }) {
     let val = 0;
     const iv = setInterval(() => {
       if (!mountedRef.current) { clearInterval(iv); return; }
-      val += Math.random() * 9 + 3;
+      val += Math.random() * 15 + 5;
       if (val >= 100) { val = 100; clearInterval(iv); }
       setProgress(val);
-    }, 35);
+    }, 15);
     return () => clearInterval(iv);
   }, [phase]);
 

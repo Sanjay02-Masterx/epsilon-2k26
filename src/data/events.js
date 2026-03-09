@@ -85,7 +85,7 @@ const events = [
     venue: "KRS Seminar Hall Main Block",
     coordinators: [
       { name: "Srikanth N", phone: "9943246709" },
-      { name: "Surya S",   phone: "9043083844" }
+      { name: "Surya S", phone: "9043083844" }
     ],
     email: "epsilon2k26@gmail.com",
     prize: "Exciting Cash Prize",
@@ -119,12 +119,12 @@ const events = [
         }
       ],
       judgingCriteria: [
-        { criterion: "Technical Content",       marks: 25 },
+        { criterion: "Technical Content", marks: 25 },
         { criterion: "Innovation & Originality", marks: 20 },
-        { criterion: "Presentation Skills",      marks: 20 },
-        { criterion: "PPT Design",               marks: 15 },
-        { criterion: "Q&A Performance",          marks: 15 },
-        { criterion: "Time Management",          marks: 5  }
+        { criterion: "Presentation Skills", marks: 20 },
+        { criterion: "PPT Design", marks: 15 },
+        { criterion: "Q&A Performance", marks: 15 },
+        { criterion: "Time Management", marks: 5 }
       ],
       duration: "10:00 AM – 1:00 PM"
     },
@@ -148,7 +148,7 @@ const events = [
     time: "10:00 AM – 3:00 PM",
     venue: "ECE Circuit Lab (1st floor Main block)",
     coordinators: [
-      { name: "M. Lokesh",    phone: "6369974529" },
+      { name: "M. Lokesh", phone: "6369974529" },
       { name: "M. Tarun", phone: "7200067554" }
     ],
     email: "epsilon2k26@gmail.com",
@@ -193,12 +193,12 @@ const events = [
         }
       ],
       judgingCriteria: [
-        { criterion: "Component Selection",   marks: 20 },
-        { criterion: "Circuit Accuracy",      marks: 20 },
-        { criterion: "Output Precision",      marks: 20 },
+        { criterion: "Component Selection", marks: 20 },
+        { criterion: "Circuit Accuracy", marks: 20 },
+        { criterion: "Output Precision", marks: 20 },
         { criterion: "Constraint Satisfaction", marks: 20 },
-        { criterion: "Neatness & Layout",     marks: 10 },
-        { criterion: "Time Efficiency",       marks: 10 }
+        { criterion: "Neatness & Layout", marks: 10 },
+        { criterion: "Time Efficiency", marks: 10 }
       ],
       duration: "10:00 AM – 3:00 PM"
     },
@@ -223,7 +223,7 @@ const events = [
     venue: "Main Block",
     coordinators: [
       { name: "Ramprasath M", phone: "7695863928" },
-      { name: "Bharanitharan",    phone: "8248910236" }
+      { name: "Bharanitharan", phone: "8248910236" }
     ],
     email: "epsilon2k26@gmail.com",
     prize: "No Entry Fees! Exciting Cash Prizes",
@@ -264,9 +264,9 @@ const events = [
         }
       ],
       judgingCriteria: [
-        { criterion: "Technical Knowledge",         marks: 40 },
+        { criterion: "Technical Knowledge", marks: 40 },
         { criterion: "Logical & Analytical Skills", marks: 35 },
-        { criterion: "Speed & Team Coordination",   marks: 25 }
+        { criterion: "Speed & Team Coordination", marks: 25 }
       ],
       duration: "Two sessions — morning and afternoon"
     },
@@ -288,7 +288,7 @@ const events = [
     registrationLink: "https://forms.gle/HhFiQQ9au7eLMXpp7",
     meta: {
       topic: "Innovation & Entrepreneurship",
-      teamSize: "3 members mandatory"
+      teamSize: "1-3 members"
     },
     date: "16 March 2026",
     time: "9:30 AM – 4:00 PM",
@@ -337,10 +337,10 @@ const events = [
       ],
       judgingCriteria: [
         { criterion: "Innovation & Originality", marks: 25 },
-        { criterion: "Market Feasibility",       marks: 25 },
-        { criterion: "Presentation Skills",      marks: 20 },
-        { criterion: "Negotiation Skill",        marks: 20 },
-        { criterion: "Investment Worthiness",    marks: 10 }
+        { criterion: "Market Feasibility", marks: 25 },
+        { criterion: "Presentation Skills", marks: 20 },
+        { criterion: "Negotiation Skill", marks: 20 },
+        { criterion: "Investment Worthiness", marks: 10 }
       ],
       duration: "9:30 AM – 4:00 PM"
     },
@@ -364,8 +364,8 @@ const events = [
     time: "10:00 AM",
     venue: "Main Block, First Floor – CR2",
     coordinators: [
-      { name: "Steve Vincili S",  phone: "9025172801" },
-      { name: "Keerthivasan S",   phone: "9025172801" }
+      { name: "Steve Vincili S", phone: "9025172801" },
+      { name: "Keerthivasan S", phone: "9025172801" }
     ],
     email: "epsilon2k26@gmail.com",
     details: {
@@ -406,8 +406,8 @@ const events = [
         }
       ],
       judgingCriteria: [
-        { criterion: "Round 1 – Memory Accuracy",          marks: 30 },
-        { criterion: "Round 2 – Communication Clarity",    marks: 30 },
+        { criterion: "Round 1 – Memory Accuracy", marks: 30 },
+        { criterion: "Round 2 – Communication Clarity", marks: 30 },
         { criterion: "Round 3 – Creativity & Performance", marks: 40 }
       ],
       duration: "Starting 10:00 AM"
@@ -467,19 +467,19 @@ const events = [
         }
       ],
       judgingCriteria: [
-        { criterion: "Round 1 – Task Completion",          marks: 20 },
-        { criterion: "Round 1 – Accuracy & Clarity",       marks: 10 },
-        { criterion: "Round 1 – Team Coordination",        marks: 10 },
-        { criterion: "Round 1 – Strategy & Smart Play",    marks: 10 },
-        { criterion: "Round 2 – Creativity",               marks: 20 },
-        { criterion: "Round 2 – Expression & Confidence",  marks: 10 },
-        { criterion: "Round 2 – Team Coordination",        marks: 10 },
-        { criterion: "Round 2 – Audience Engagement",      marks: 10 }
+        { criterion: "Round 1 – Task Completion", marks: 20 },
+        { criterion: "Round 1 – Accuracy & Clarity", marks: 10 },
+        { criterion: "Round 1 – Team Coordination", marks: 10 },
+        { criterion: "Round 1 – Strategy & Smart Play", marks: 10 },
+        { criterion: "Round 2 – Creativity", marks: 20 },
+        { criterion: "Round 2 – Expression & Confidence", marks: 10 },
+        { criterion: "Round 2 – Team Coordination", marks: 10 },
+        { criterion: "Round 2 – Audience Engagement", marks: 10 }
       ],
       duration: "10:00 AM – 1:00 PM"
     },
     note: "Stay calm in the dark and think smart. Limited slots — register early!",
-    gradient: ["#1a1a1a", "#FFA500"],
+    gradient: ["#800000", "#FF4500"], // changed to be more visible instead of black
     poster: "/posters/blackout.jpeg",
     brochure: "/brochures/blackout.pdf"
   },
@@ -499,7 +499,7 @@ const events = [
     venue: "Machines Lab, Ground Floor (Main Block)",
     coordinators: [
       { name: "Bootharajan", phone: "8870645437" },
-      { name: "Manoj",       phone: "8807999672" }
+      { name: "Manoj", phone: "8807999672" }
     ],
     email: "epsilon2k26@gmail.com",
     details: {
@@ -536,9 +536,9 @@ const events = [
         }
       ],
       judgingCriteria: [
-        { criterion: "Position on Board",     marks: null },
-        { criterion: "Accuracy of Answers",   marks: null },
-        { criterion: "Team Coordination",     marks: null },
+        { criterion: "Position on Board", marks: null },
+        { criterion: "Accuracy of Answers", marks: null },
+        { criterion: "Team Coordination", marks: null },
         { criterion: "Discipline & Fair Play", marks: null }
       ],
       duration: "10:00 AM – 1:00 PM | 20–30 min per match"
@@ -564,7 +564,7 @@ const events = [
     venue: "Power Electronics Laboratory(Main Block)",
     coordinators: [
       { name: "Dronaditya S", phone: "8122056031" },
-      { name: "Suhail",    phone: "8122781495" }
+      { name: "Suhail", phone: "8122781495" }
     ],
     email: "epsilon2k26@gmail.com",
     details: {
@@ -605,9 +605,9 @@ const events = [
       ],
       judgingCriteria: [
         { criterion: "Problem Analysis & Logical Reasoning", marks: null },
-        { criterion: "Debugging Accuracy",                   marks: null },
-        { criterion: "Teamwork & Time Management",           marks: null },
-        { criterion: "Final Presentation Clarity",           marks: null }
+        { criterion: "Debugging Accuracy", marks: null },
+        { criterion: "Teamwork & Time Management", marks: null },
+        { criterion: "Final Presentation Clarity", marks: null }
       ],
       duration: "9:00 AM – 1:00 PM"
     },

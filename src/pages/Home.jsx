@@ -782,7 +782,7 @@ export default function Home() {
           className="home-video"
           src="/bg-video.mp4"
           autoPlay muted loop playsInline
-          preload={IS_MOBILE ? "metadata" : "auto"}
+          preload="auto"
           aria-hidden="true"
         />
 
