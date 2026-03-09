@@ -1,0 +1,20 @@
+
+> epsilon-2k26@0.0.0 lint
+> eslint .
+
+
+C:\Users\SANJAY\Dropbox\For project\Epsilon-files-main\frontend E26\src\components\background\ColorBends.jsx
+    41:33  error    'colors' is not defined                                                                                                                                                                                                                                      no-undef
+    75:26  error    'isMobile' is not defined                                                                                                                                                                                                                                    no-undef
+   961:5   error    'rafRef' is not defined                                                                                                                                                                                                                                      no-undef
+   970:9   error    'rafRef' is not defined                                                                                                                                                                                                                                      no-undef
+   971:28  error    'rafRef' is not defined                                                                                                                                                                                                                                      no-undef
+   972:7   error    'rafRef' is not defined                                                                                                                                                                                                                                      no-undef
+  1113:55  warning  The ref value 'rafRef.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'rafRef.current' to a variable inside the effect, and use that variable in the cleanup function  react-hooks/exhaustive-deps
+  1133:6   warning  React Hook useEffect has a missing dependency: 'isMobile'. Either include it or remove the dependency array                                                                                                                                                  react-hooks/exhaustive-deps
+
+C:\Users\SANJAY\Dropbox\For project\Epsilon-files-main\frontend E26\src\pages\About.jsx
+  46:25  error  'setParticles' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+✖ 9 problems (7 errors, 2 warnings)
+

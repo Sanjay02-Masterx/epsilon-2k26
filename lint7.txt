@@ -1,0 +1,11 @@
+
+> epsilon-2k26@0.0.0 lint
+> eslint .
+
+
+C:\Users\SANJAY\Dropbox\For project\Epsilon-files-main\frontend E26\src\components\background\ColorBends.jsx
+  41:33  error  'colors' is not defined    no-undef
+  75:26  error  'isMobile' is not defined  no-undef
+
+✖ 2 problems (2 errors, 0 warnings)
+
