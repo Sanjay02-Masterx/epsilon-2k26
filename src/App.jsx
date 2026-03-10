@@ -1,5 +1,6 @@
 import { BrowserRouter, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import AppRoutes     from "./routes/AppRoutes";
 import Navbar        from "./components/common/Navbar";
@@ -49,6 +50,7 @@ function AppLayout() {
       <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
       <AppRoutes />
       <Footer />
+      <SpeedInsights />
     </>
   );
 }
